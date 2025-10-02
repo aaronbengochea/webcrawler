@@ -100,6 +100,8 @@ class PriorityCrawler:
                 self.error_counts["robots-skip"] = self.error_counts.get("robots-skip", 0) + 1
             return
 
+        # Making note of the try functionality here since it was discussed during the demo
+        # HTTP errors would mean this try functionality fails which will prevent the processing of errors into our heap
         try:
             start_t = time.time()
             resp = urllib.request.urlopen(url, timeout=FETCH_TIMEOUT, context=ssl_context)
