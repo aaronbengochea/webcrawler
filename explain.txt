@@ -1,1 +1,117 @@
-WIP 
+Overview
+------------------------------------------------------------
+This project implements a multi threaded, priority based web crawler in Python.  
+The crawler begins with a set of seed URLs retrieved dynamically using the  
+Google Custom Search JSON API based on a user supplied query. From these seeds,  
+the system explores pages concurrently while respecting robots.txt, applying  
+a domain based priority policy, and skipping undesired file types.
+
+At a high level, the crawler maintains a priority queue of URLs to visit.  
+Priorities are calculated so that pages from domains with fewer visits are  
+favored, encouraging breadth across sites rather than depth in a single domain.  
+Worker threads pop URLs from the queue, fetch pages with error handling,  
+normalize URLs to avoid duplicates, and parse discovered hyperlinks.  
+New URLs are filtered (robots.txt, blacklist, CGI, already visited) before  
+being added to the queue with updated priority.  
+
+Redirects are recorded in a redirect_map so that repeated crawling of the  
+same resource under different URLs is avoided. All visited pages are logged  
+with details such as URL, size, return code, depth, priority score, and elapsed  
+fetch time. At the end, a summary report is generated with totals for pages,  
+bytes, GB/GiB, errors, and crawl rate.
+
+------------------------------------------------------------
+How It Works
+------------------------------------------------------------
+1. Seed Gathering
+   - The query in config.py is used by seed_fetcher.py to call the Google  
+     Custom Search API and return the top N results.  
+   - These results are normalized and inserted into the crawl priority queue.
+
+2. Priority Queue 
+   - Implemented with a heap where the priority is inversely proportional  
+     to the number of pages already crawled from the same base domain.  
+   - This ensures diversity across domains, as required by the assignment.  
+
+3. Fetching & Redirect Handling  
+   - Each worker thread retrieves a page using urllib.  
+   - Redirects are resolved to a final normalized URL and recorded in  
+     redirect_map to avoid recrawling the same resource under different links.
+
+4. Filtering & Robots  
+   - URLs are normalized to remove noise (case, trailing defaults, fragments).  
+   - Non-HTML MIME types and blacklisted extensions are skipped early.  
+   - The crawler checks each URL against robots.txt rules with a configurable  
+     timeout and avoids disallowed paths.  
+   - URLs containing “cgi” are also discarded.
+
+5. Concurrency  
+   - A ThreadPoolExecutor manages a pool of workers.  
+   - The queue is continuously refilled until the maximum number of pages  
+     (MAX_PAGES) is reached.  
+
+6. Logging  
+   - Each successfully fetched page is logged with its metadata.  
+   - At the end, a summary report is saved, including total pages, bytes,  
+     GB/GiB, errors, and crawl throughput.
+
+------------------------------------------------------------
+Known Limitations / Bugs
+------------------------------------------------------------
+- Robots.txt handling is basic and does not yet distinguish between multiple  
+  user-agent sections (applies only "*" or "mycrawler").  
+- Query parameters in URLs are currently preserved during normalization;  
+  in some cases this can lead to duplicate crawling of near-identical pages.  
+- Domain priority is based only on collapsed base domains (e.g., walmart.com),  
+  not full subdomains, so some diversity signals may be lost.  
+- While the crawler is efficient, extremely large or slow servers may still  
+  bottleneck despite timeouts.  
+- Advanced features such as politeness delays (per domain rate limiting) are  
+  not yet implemented.
+
+------------------------------------------------------------
+Additional Resources Used
+------------------------------------------------------------
+- Python urllib for HTTP requests and redirects.  
+- Python html.parser for link extraction.  
+- Python certifi for SSL certificate validation.  
+- Python concurrent.futures for multi-threading.  
+- Google Custom Search JSON API for dynamic seed URLs.  
+- Standard documentation on Python’s urlparse and urljoin for URL handling.  
+
+------------------------------------------------------------
+Special Features Beyond Requirements
+------------------------------------------------------------
+- Integration with Google Custom Search API to fetch seed URLs dynamically  
+  from a user’s natural-language query (instead of manually providing seeds).  
+- Redirect map to record original to final URL mappings and prevent duplicate crawling.  
+- Logging includes both decimal GB (10^9 bytes) and binary GiB (2^30 bytes)  
+  for clarity in measuring data crawled.  
+- Configurations, link parsing, crawling, logging, and seed fetching are  
+  separated into modular Python files for maintainability.
+
+------------------------------------------------------------
+Achievements
+------------------------------------------------------------
+The crawler was tested with two real world queries and achieved strong  
+performance at scale. Both tests were performed using the multi threaded  
+approach with 50 worker threads, with request timeout = 1 second and  
+robots.txt timeout = 3 seconds.
+
+Test #1
+- Query: "where to find the best cheese in the US"  
+- Pages crawled: 15000  
+- Total size: 2.81 GB  
+- Total time: 830 seconds  
+- Throughput: 18.06 pages/second  
+
+Test #2
+- Query: "how are tires made"  
+- Pages crawled: 15000  
+- Total size: 2.29 GB  
+- Total time: 821 seconds  
+- Throughput: 18.25 pages/second  
+
+These results demonstrate that the crawler is capable of sustaining a  
+high throughput of over 18 pages/second, while still respecting robots.txt  
+and applying domain priority balancing.
