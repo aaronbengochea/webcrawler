@@ -17,6 +17,13 @@ The crawler logs crawl results include:
 ------------------------------------------------------------
 File List
 ------------------------------------------------------------
+.env
+    Used by the config.py file to load enviornment variables
+    - GOOGLE_API_KEY: Google Custom Search JSON API key
+    - GOOGLE_CX: Websearch engine ID (found in google project control panel)
+
+requirements.txt   
+    Used to download dependencies of the crawler
 
 config.py
     Contains global configuration constants such as:
@@ -28,12 +35,6 @@ config.py
     - ROBOTS_TIMEOUT: number of seconds waiter per robots request
     - LOG_FILE: name of output log file
     - BLACKLIST_EXT: file extensions to skip
-
-.env
-    Used by the config.py file to load enviornment variables
-    - GOOGLE_API_KEY: Google Custom Search JSON API key
-    - GOOGLE_CX: Websearch engine ID (found in google project control panel)
-
 
 link_parser.py
     Defines:
