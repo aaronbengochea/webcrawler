@@ -2,10 +2,6 @@ import requests
 from config import GOOGLE_API_KEY, GOOGLE_CX, SEED_QUERY, NUMBER_OF_SEEDS
 
 def fetch_google_seeds():
-    """
-    Use Google Custom Search to get top NUM_SEEDS URLs for SEED_QUERY.
-    Returns list of seed URLs.
-    """
     url = "https://www.googleapis.com/customsearch/v1"
     params = {
         "key": GOOGLE_API_KEY,
