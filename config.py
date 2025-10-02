@@ -4,7 +4,7 @@ load_dotenv()
 
 SEED_QUERY = "how are tires made"
 NUMBER_OF_SEEDS = 10                    # Number of seed URLs to fetch via Google Custom Search API
-MAX_PAGES = 50                         # Total pages to crawl
+MAX_PAGES = 10000                       # Total pages to crawl
 MAX_WORKERS = 50                        # Number of concurrent worker threads
 FETCH_TIMEOUT = 1                       # Seconds for fetching HTML pages
 ROBOTS_TIMEOUT = 3                      # Seconds for fetching robots.txt
