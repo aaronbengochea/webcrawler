@@ -13,8 +13,8 @@ Follow these steps to set up and run the crawler:
 ### 1. Clone the Repository
 
 ```bash
-git clone <your-repo-url>  
-cd <your-repo-folder>  
+git clone https://github.com/aaronbengochea/webcrawler.git  
+cd webcrawler  
 ```
 ---
 
