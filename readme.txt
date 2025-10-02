@@ -72,8 +72,7 @@ How to Run
 1. Install Python 3 (>=3.9 recommended).
 
 2. Install dependencies:
-       pip install certifi
-       pip install python-dotenv
+       pip install requirements.txt
 
 3. Using Google Custom Search API for seeds:
    - Obtain a Google API Key
@@ -93,9 +92,8 @@ How to Run
 5. Run the crawler:
        python main.py
 
-   Progress will print to the console as pages are crawled.  
-   A detailed log will be written to user config defined 
-   LOG_FILE.
+Progress will print to the console as pages are crawled.  
+A detailed log will be written to user config defined LOG_FILE.
 
 ------------------------------------------------------------
 Notes
