@@ -1,6 +1,3 @@
-README - Priority Web Crawler
-
-------------------------------------------------------------
 Project Overview
 ------------------------------------------------------------
 This project is a multi threaded priority based web crawler.  
@@ -53,7 +50,7 @@ crawler.py
     - Logs crawl results
 
 logger.py
-    Utility functions to save crawl logs in human-readable form,  
+    Utility functions to save crawl logs in readable form,  
     including statistics (total pages, total bytes, total GB/GiB,  
     errors, crawl rate, etc.)
 
@@ -97,7 +94,8 @@ How to Run
        python main.py
 
    Progress will print to the console as pages are crawled.  
-   A detailed log will be written to LOG_FILE (default: crawl_log.txt).
+   A detailed log will be written to user config defined 
+   LOG_FILE.
 
 ------------------------------------------------------------
 Notes
