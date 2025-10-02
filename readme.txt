@@ -73,7 +73,7 @@ How to Run
 1. Install Python 3 (>=3.9 recommended).
 
 2. Install dependencies:
-       pip install requirements.txt
+       pip install -r requirements.txt
 
 3. Using Google Custom Search API for seeds:
    - Obtain a Google API Key
